@@ -6,6 +6,11 @@ from controller.user import UserController
 from controller.role_permission import RolePermissionController
 from controller.product import ProductController
 
+from middleware.auth import ( 
+    permission_required,
+    token_required
+)
+
 app = Flask(__name__)
 CORS(app)
 
@@ -24,17 +29,21 @@ def login():
     return user_controller.login(auth.username, auth.password)
 
 @app.get("/permissions")
+@token_required
 def get_permissions(): 
-    role_id = request.args.get("role_id")
+    role_id = request.user.get("role_id")
     return role_permission_controller.get_permissions(role_id)
 
 
 @app.get("/products")
+@token_required
+@permission_required("product:view")
 def get_products():
     return product_controller.get_products()
 
 
 @app.post("/product")
+@permission_required("product:create")
 def insert_product():
     payload = request.json
     if not payload:
@@ -63,6 +72,7 @@ def insert_product():
     )
 
 @app.put("/product/<id>/")
+@permission_required("product:update")
 def update_product(id):
     payload = request.json
     if not payload:
@@ -90,10 +100,12 @@ def update_product(id):
     )
 
 @app.get("/product/<id>/")
+@permission_required("product:view")
 def get_product(id):
     return product_controller.get_product(id)
 
 @app.delete("/product/<id>/")
+@permission_required("product:delete")
 def delete_product(id):
     return product_controller.delete_product(id)
 

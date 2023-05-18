@@ -5,6 +5,17 @@ from model.role_permission import RolePermission
 class RolePermissionController:
     def __init__(self):
         self.role_permission = RolePermission()
+    
+    def has_permission(self, role_id: str, required_permission: str) -> bool:
+        try:
+            is_has_permission = self.role_permission.has_permission(
+                role_id,
+                required_permission
+            )
+            return bool(is_has_permission)
+        except:
+            traceback.print_exc()
+            return False
         
     def get_permissions(self, role_id: str) -> dict:
         try:
