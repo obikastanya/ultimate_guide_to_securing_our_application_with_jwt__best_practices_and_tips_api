@@ -47,6 +47,10 @@ def token_required(func) -> dict:
             
             payload = token_controller.decode_access_token(jwt_access_token)
 
+            is_token_has_been_revoked = token_controller.has_been_revoked(jwt_access_token)
+            if is_token_has_been_revoked:
+                return {"message":"Revoked token"}, 400
+
             # extend data to the request object
             request.user={
                 "id":payload.get("id"),

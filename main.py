@@ -5,6 +5,7 @@ from flask_cors import CORS
 from controller.user import UserController
 from controller.role_permission import RolePermissionController
 from controller.product import ProductController
+from controller.token import TokenController
 
 from middleware.auth import ( 
     permission_required,
@@ -17,6 +18,7 @@ CORS(app)
 user_controller = UserController()
 role_permission_controller = RolePermissionController()
 product_controller = ProductController()
+token_controller = TokenController()
 
 app = Flask(__name__)
 CORS(app)
@@ -109,6 +111,19 @@ def get_product(id):
 def delete_product(id):
     return product_controller.delete_product(id)
 
+
+@app.post("/logout")
+@token_required
+def logout():
+    access_token = request.headers.get("Authorization")
+    access_token = access_token.split(" ")[1]
+    return token_controller.revoke_access_token(access_token)
+
+@app.delete("/token/revoked/clear")
+@token_required
+@permission_required("revoked_token:delete")
+def clear_revoked_token():
+    return token_controller.clear_revoked_token()
 
 if __name__== "__main__":
     app.run(port=8080, debug=True)
