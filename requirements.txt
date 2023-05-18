@@ -1,0 +1,5 @@
+bcrypt==4.0.1
+Flask==2.2.3
+PyJWT==2.6.0
+pyscopg2-binary==66.0.2
+Flask-Cors==3.0.10
