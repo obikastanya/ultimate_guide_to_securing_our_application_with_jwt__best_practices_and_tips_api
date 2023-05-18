@@ -125,5 +125,19 @@ def logout():
 def clear_revoked_token():
     return token_controller.clear_revoked_token()
 
+@app.post("/token/refresh")
+def refresh_token():
+    payload = request.json
+    if not payload:
+        return {"message":"Bad request"}, 400
+    
+    access_token = payload.get("access_token")
+    refresh_token = payload.get("refresh_token")
+
+    return token_controller.refresh_token(
+        access_token,
+        refresh_token
+    )
+
 if __name__== "__main__":
     app.run(port=8080, debug=True)
