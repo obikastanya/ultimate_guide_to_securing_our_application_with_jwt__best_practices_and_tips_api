@@ -45,6 +45,7 @@ def get_products():
 
 
 @app.post("/product")
+@token_required
 @permission_required("product:create")
 def insert_product():
     payload = request.json
@@ -74,6 +75,7 @@ def insert_product():
     )
 
 @app.put("/product/<id>/")
+@token_required
 @permission_required("product:update")
 def update_product(id):
     payload = request.json
@@ -102,11 +104,13 @@ def update_product(id):
     )
 
 @app.get("/product/<id>/")
+@token_required
 @permission_required("product:view")
 def get_product(id):
     return product_controller.get_product(id)
 
 @app.delete("/product/<id>/")
+@token_required
 @permission_required("product:delete")
 def delete_product(id):
     return product_controller.delete_product(id)
