@@ -7,14 +7,14 @@ CREATE TABLE IF NOT EXISTS public.permission
     id character varying(200) NOT NULL,
     description character varying(250) NOT NULL,
     CONSTRAINT permission_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.role
 (
     id character varying(100) NOT NULL,
     description character varying(250)  NOT NULL,
     CONSTRAINT role_fkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.role_permission
 (
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.role_permission
         REFERENCES public.permission (id),
     CONSTRAINT role_permission_role_id_fkey FOREIGN KEY (role_id)
         REFERENCES public.role (id) 
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.user
 (
@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS public.user
     CONSTRAINT user_username_key UNIQUE (username),
     CONSTRAINT role_fkey FOREIGN KEY (role_id)
         REFERENCES public.role (id) 
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.revoked_token
 (
     access_token character varying(250) NOT NULL,
     expired_at timestamp with time zone NOT NULL,
     CONSTRAINT revoked_token_pkey PRIMARY KEY (access_token)
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS public.product
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS public.product
     stock integer,
     brand character varying(100),
     category character varying(100)
-)
+);
 
 
 -- Insert Data
